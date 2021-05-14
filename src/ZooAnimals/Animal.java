@@ -4,19 +4,50 @@ public abstract class Animal {
 
     protected double foodNeed;
     protected double waterNeed;
-    protected int daysWithoutFood;
-    protected int daysWithoutWater;
-    protected boolean isSick;
+    protected double bodyFoodStorage;
+    protected double bodyWaterStorage;
+    protected boolean isSick = false;
     protected double sicknessResistance;
-    protected boolean isAlive;
+    protected boolean isAlive = true;
 
-    public void setSick(boolean sick) {
-        isSick = sick;
+    protected String sickAnimal = " looks ill";
+    protected String curedAnimal = " is cured";
+
+    public double getWaterNeed() {
+        return waterNeed;
     }
 
-    public abstract void printIfSick();
+    public double getBodyWaterStorage() {
+        return bodyWaterStorage;
+    }
 
-    public abstract void printIfCured();
+    public void setBodyWaterStorage(double bodyWaterStorage) {
+        this.bodyWaterStorage = bodyWaterStorage;
+    }
+
+    public void isSick() {
+        isSick = true;
+    }
+
+    public void isCured(){
+        isSick = false;
+    }
+
+    public void printIfSick(){
+
+        String initialString = this.getClass() + sickAnimal;
+
+        System.out.println(initialString.substring(17));
+    }
+
+    public void printIfCured(){
+
+        String initialString = this.getClass() + curedAnimal;
+
+        System.out.println(initialString.substring(17));
+    }
+
+
 
 
 }
