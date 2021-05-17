@@ -6,18 +6,25 @@ public class Player {
 
     private int energy = 2;
     private int gold = 1000;
-    private ArrayList<Animal> animalsInTheZoo;
+    public ArrayList<Animal> animalsInTheZoo;
     private int foodStorage;
     private int waterStorage;
 
 
     public Player() {
         animalsInTheZoo = new ArrayList<>();
-        animalsInTheZoo.add(new Elephant());
-        animalsInTheZoo.add(new Lion());
-        animalsInTheZoo.add(new Monkey());
-        animalsInTheZoo.add(new Sloth());
-        animalsInTheZoo.add(new Zebra());
+
+        Elephant elephant = new Elephant();
+        Lion lion = new Lion();
+        Monkey monkey = new Monkey();
+        Sloth sloth = new Sloth();
+        Zebra zebra = new Zebra();
+
+        animalsInTheZoo.add(elephant);
+        animalsInTheZoo.add(lion);
+        animalsInTheZoo.add(monkey);
+        animalsInTheZoo.add(sloth);
+        animalsInTheZoo.add(zebra);
 
     }
 

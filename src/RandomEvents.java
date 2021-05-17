@@ -1,12 +1,21 @@
 import ZooAnimals.Animal;
+import java.util.*;
 
-import java.util.List;
-import java.util.Random;
 
 public class RandomEvents {
 
+    public double saleOnFoodProbability = 0.1;
+    public double hotDayProbability = 0.1;
+    public double ratInvasionProbability = 0.1;
+    public double nothingHappenedProbability = 0.2;
+    public double rainProbability = 0.1;
+    public double sicknessProbability = 0.1;
+    public double peopleFeedProbability = 0.1;
+    public double foodOutOfStockProbability = 0.1;
+    public double someoneGetsStuckProbability = 0.1;
 
-    // sale on food packs, randomly the discount is either 20% or 40%
+
+    // sale on food packs, randomly packs are discounted to 8 or 6 gold
     public void saleOnFood(Store store){
 
         Random rand = new Random();
@@ -57,39 +66,61 @@ public class RandomEvents {
 
     }
 
-    // the sickness roams in the zoo, random 3 animals are selected and can get sick
+    // the sickness roams in the zoo, random 60% animals are selected and can get sick
     // the probability of actually getting sick depends on the animals sicknessResistance
-    public void sickness(List<Animal> animalList){
+    public ArrayList<Animal> sickness(List<Animal> animalList){
+
+        int sizeOfSickAnimalList = (int) (animalList.size() * 2) / 3;
+        ArrayList<Animal> sickAnimalList = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        Random rand = new Random();
+
+        while(set.size() != sizeOfSickAnimalList){
+
+            set.clear();
+
+            for(int i = 0; i < sizeOfSickAnimalList; i++){
+              set.add(rand.nextInt(animalList.size()));
+            }
+        }
 
 
+        for(int i : set){
+            sickAnimalList.add(animalList.get(i));
+        }
 
-    }
 
-    public void peopleFeed(){
-
-    }
-
-    public void foodOutOfStockInStore(){
-
-    }
-
-    public void monkeyGetsStuck(){
-
-    }
-
-    public void activeZebra(){
-
-    }
-
-    public void lionWorksAndPeopleDonateFood(){
-
-    }
-
-    public void somethingBreaks(){
+    return sickAnimalList;
 
     }
 
+    // a random amount of food is being donated to the zoo
+    // it goes to the food storage
+    public void peopleFeed(Player player){
 
+        Random rand = new Random();
+        int random = rand.nextInt(11) + 5;
 
+        player.setFoodStorage(player.getFoodStorage() + random);
+
+    }
+
+    // there is no food in the store at that day
+    public void foodOutOfStock(Store store){
+
+        store.setIsFoodForSale(false);
+
+    }
+
+    // one animal gets stuck, player has to spend one energy point to free it or
+    // after 2 days the animal dies (no matter if it´s being fed and given water or not)
+    public void someoneGetsStuck(List<Animal> animalList){
+
+        Random rand = new Random();
+        int random = rand.nextInt(animalList.size());
+
+        animalList.get(random).setStuck(true);
+
+    }
 
 }

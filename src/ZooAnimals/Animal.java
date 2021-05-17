@@ -8,6 +8,7 @@ public abstract class Animal {
     protected double bodyWaterStorage;
     protected boolean isSick = false;
     protected double sicknessResistance;
+    protected boolean isStuck = false;
     protected boolean isAlive = true;
 
     protected String sickAnimal = " looks ill";
@@ -23,6 +24,30 @@ public abstract class Animal {
 
     public void setBodyWaterStorage(double bodyWaterStorage) {
         this.bodyWaterStorage = bodyWaterStorage;
+    }
+
+    public boolean isStuck() {
+        return isStuck;
+    }
+
+    public void setStuck(boolean stuck) {
+        isStuck = stuck;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public double getSicknessResistance() {
+        return sicknessResistance;
+    }
+
+    public void setSicknessResistance(double sicknessResistance) {
+        this.sicknessResistance = sicknessResistance;
     }
 
     public void isSick() {
