@@ -1,6 +1,8 @@
-import ZooAnimals.*;
+package ZooSimMain;
 
+import ZooSimMain.ZooAnimals.*;
 import java.util.ArrayList;
+
 
 public class Player {
 

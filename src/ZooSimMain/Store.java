@@ -1,3 +1,5 @@
+package ZooSimMain;
+
 public class Store {
 
     private int foodPrice = 10;
