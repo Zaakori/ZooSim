@@ -8,6 +8,5 @@ public class Elephant extends Animal {
         bodyFoodAmount = 7.5;
         bodyWaterAmount = 3;
         sicknessResistance = 0.8;
-
     }
 }

@@ -61,7 +61,7 @@ public class RandomEvents {
     }
 
     // used for getting a random number in a correct range
-    public void getRandomNumberInRightRange(){
+    public int getRandomNumberInRightRange(){
 
         Random rand = new Random();
         int random;
@@ -72,6 +72,7 @@ public class RandomEvents {
 
         random = rand.nextInt(total) + 1;
 
+        return random;
     }
 
 

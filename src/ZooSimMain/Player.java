@@ -38,7 +38,7 @@ public class Player {
         return gold;
     }
 
-    public ArrayList<Animal> getAnimalsInTheZoo() {
+    public ArrayList<Animal> getAnimalList() {
         return animalsInTheZoo;
     }
 

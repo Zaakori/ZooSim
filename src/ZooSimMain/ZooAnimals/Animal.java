@@ -9,7 +9,6 @@ public abstract class Animal {
     protected boolean isSick = false;
     protected double sicknessResistance;
     protected boolean isStuck = false;
-    protected boolean isAlive = true;
 
     protected String sickAnimal = " looks ill";
     protected String curedAnimal = " is cured";
@@ -61,14 +60,6 @@ public abstract class Animal {
 
     public void setStuck(boolean stuck) {
         isStuck = stuck;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
     }
 
     public double getSicknessResistance() {
