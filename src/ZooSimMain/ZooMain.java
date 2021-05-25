@@ -2,6 +2,7 @@ package ZooSimMain;
 
 import ZooSimMain.ZooAnimals.Animal;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class ZooMain {
@@ -13,41 +14,45 @@ public class ZooMain {
 
         int dayCounter = 1;
         int pointCounter = 0;
-
+        Scanner scan = new Scanner(System.in);
 
         Player player = new Player();
         Store store = new Store();
         RandomEvents randomEvents = new RandomEvents();
 
+        player.shopFoodOrWater(scan, store);
+        System.out.println();
+        player.feedTheAnimals(scan);
+        player.waterTheAnimals(scan);
+        player.waterTheAnimals(scan);
 
 
 
-
-
-        while(dayCounter < 8){
-
-            System.out.println(dayCounter);
-
-         takeWaterFromAnimals(player.getAnimalList());
-
-            deletePassedAnimal(player.getAnimalList());
-
-            pointCounter += givingDayPoints(player.animalsInTheZoo);
-
-            dayCounter++;
-
-
-
-            for(Animal a : player.getAnimalList()){
-                System.out.println(a);
-            }
-            System.out.println("**************");
-        }
-
-        System.out.println("game over");
-        System.out.println(pointCounter);
+//        while(dayCounter < 8){
+//
+//            System.out.println(dayCounter);
+//
+//         takeWaterFromAnimals(player.getAnimalList());
+//
+//            deletePassedAnimal(player.getAnimalList());
+//
+//            pointCounter += givingDayPoints(player.animalList);
+//
+//            dayCounter++;
+//
+//
+//
+//            for(Animal a : player.getAnimalList()){
+//                System.out.println(a);
+//            }
+//            System.out.println("**************");
+//        }
+//
+//        System.out.println("game over");
+//        System.out.println(pointCounter);
 
     }
+
 
     // in the end of the day takes away one days worth of water
     // from each Animal Object (so it gets thirsty and wants to drink in the next days)
