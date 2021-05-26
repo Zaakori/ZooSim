@@ -9,7 +9,7 @@ public class Player {
 
     private int energy = 2;
     private int gold = 1000;
-    public ArrayList<Animal> animalList;
+    private ArrayList<Animal> animalList;
     private double foodStorage;
     private double waterStorage;
     private final String notEnoughEnergy = "Sorry, you don´t have enough energy to do that.";
@@ -65,10 +65,7 @@ public class Player {
         System.out.println("Animals in the zoo: ");
 
         for(Animal a : animalList){
-
-            String initialClassString = a.getClass() + "";
-
-            System.out.println(initialClassString.substring(28));
+            System.out.println(a.getClassAsString());
         }
     }
 
@@ -165,8 +162,7 @@ public class Player {
 
            for(Animal a : animalList){
 
-               String initClassString = a.getClass() + "";
-               String actualAnimal = initClassString.substring(28).toUpperCase();
+               String actualAnimal = a.getClassAsString().toUpperCase();
 
                if(playerInput.contains(actualAnimal)){
                    if(foodStorage >= a.getFoodNeed()){
@@ -206,8 +202,7 @@ public class Player {
 
             for(Animal a : animalList){
 
-                String initClassString = a.getClass() + "";
-                String actualAnimal = initClassString.substring(28).toUpperCase();
+                String actualAnimal = a.getClassAsString().toUpperCase();
 
                 if(playerInput.contains(actualAnimal)){
                     if(waterStorage >= a.getWaterNeed()){
@@ -222,6 +217,39 @@ public class Player {
         }
         energy--;
         printEnergyAmount();
+    }
+
+    // allows the player to cure the sick animal for 2 energy points
+    public void cureAnimals(Scanner scan){
+
+        String playerInput = "";
+
+
+        while(!playerInput.equals("DONE")){
+
+            System.out.println("Who do you want to cure? (costs 2 energy points per animal, you have " + energy + " points left)");
+            System.out.println("(if don´t want to cure, type 'done'");
+
+            playerInput = scan.nextLine().toUpperCase();
+
+            for(Animal a : animalList){
+
+                if(playerInput.contains(a.getClassAsString().toUpperCase())){
+
+                    if(a.getSicknessPoints() > 0){
+                        a.setSicknessPoints(0);
+                        a.printIfCured();
+
+                        energy -= 2;
+                        printEnergyAmount();
+
+                        return;
+                    } else {
+                        System.out.println("This animal isn´t sick... Do you still want to cure someone or you´re done?");
+                    }
+                }
+            }
+        }
     }
 
 

@@ -127,12 +127,12 @@ public class RandomEvents {
 
     }
 
-    // the sickness roams in the zoo, random 60% animals are selected and can get sick
+    // the sickness roams in the zoo, random 60% animals are selected and can get sick, animals that actually got sick are returned in ArrayList
     // the probability of actually getting sick depends on the animals sicknessResistance
-    public ArrayList<Animal> sickness(List<Animal> animalList){
+    public void sickness(List<Animal> animalList){
 
         int sizeOfSickAnimalList = (int) (animalList.size() * 2) / 3;
-        ArrayList<Animal> sickAnimalList = new ArrayList<>();
+        ArrayList<Animal> potentiallySickAnimalList = new ArrayList<>();
         Set<Integer> set = new HashSet<>();
         Random rand = new Random();
 
@@ -147,11 +147,19 @@ public class RandomEvents {
 
 
         for(int i : set){
-            sickAnimalList.add(animalList.get(i));
+            potentiallySickAnimalList.add(animalList.get(i));
         }
 
+        for(Animal a : potentiallySickAnimalList){
 
-    return sickAnimalList;
+            int randomNumber = rand.nextInt(100) + 1;
+            double usefulRandomNumber = (double) randomNumber / 100;
+
+            if(usefulRandomNumber >= a.getSicknessResistance()){
+                a.setSicknessPoints(1);
+            }
+
+        }
 
     }
 
@@ -173,15 +181,5 @@ public class RandomEvents {
 
     }
 
-    // one animal gets stuck, player has to spend one energy point to free it or
-    // after 2 days the animal dies (no matter if it´s being fed and given water or not)
-    public void someoneGetsStuck(List<Animal> animalList){
-
-        Random rand = new Random();
-        int random = rand.nextInt(animalList.size());
-
-        animalList.get(random).setStuck(true);
-
-    }
 
 }

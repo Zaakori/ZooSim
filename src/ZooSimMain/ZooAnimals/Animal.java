@@ -6,13 +6,19 @@ public abstract class Animal {
     protected double bodyFoodAmount;
     protected double waterNeed;
     protected double bodyWaterAmount;
-    protected boolean isSick = false;
+    protected int sicknessPoints = 0;
     protected double sicknessResistance;
-    protected boolean isStuck = false;
 
     protected String sickAnimal = " looks ill";
     protected String curedAnimal = " is cured";
 
+    public String getClassAsString(){
+
+        String initialString = this.getClass() + "";
+
+        return initialString.substring(28);
+
+    }
 
     public double getFoodNeed() {
         return foodNeed;
@@ -27,11 +33,7 @@ public abstract class Animal {
     }
 
     public void printFoodAmountInDays(){
-
-        String initialString = this.getClass() + " can survive " + (getBodyFoodAmount() / foodNeed) + " day(s) without food.";
-
-        System.out.println(initialString.substring(28));
-
+        System.out.println(getClassAsString() + " can survive " + (getBodyFoodAmount() / foodNeed) + " day(s) without food.");
     }
 
     public double getWaterNeed() {
@@ -47,20 +49,9 @@ public abstract class Animal {
     }
 
     public void printWaterAmountInDays(){
-
-        String initialString = this.getClass() + " can survive " + (getBodyWaterAmount() / waterNeed) + " day(s) without water.";
-
-        System.out.println(initialString.substring(28));
-
+        System.out.println(getClassAsString() + " can survive " + (getBodyWaterAmount() / waterNeed) + " day(s) without water.");
     }
 
-    public boolean isStuck() {
-        return isStuck;
-    }
-
-    public void setStuck(boolean stuck) {
-        isStuck = stuck;
-    }
 
     public double getSicknessResistance() {
         return sicknessResistance;
@@ -70,29 +61,20 @@ public abstract class Animal {
         this.sicknessResistance = sicknessResistance;
     }
 
-    public void isSick() {
-        isSick = true;
+    public int getSicknessPoints() {
+       return sicknessPoints;
     }
 
-    public void isCured(){
-        isSick = false;
+    public void setSicknessPoints(int answer){
+        sicknessPoints = answer;
     }
 
     public void printIfSick(){
-
-        String initialString = this.getClass() + sickAnimal;
-
-        System.out.println(initialString.substring(28));
+        System.out.println(getClassAsString() + sickAnimal);
     }
 
     public void printIfCured(){
-
-        String initialString = this.getClass() + curedAnimal;
-
-        System.out.println(initialString.substring(28));
+        System.out.println(getClassAsString() + curedAnimal);
     }
-
-
-
 
 }

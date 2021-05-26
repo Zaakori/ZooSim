@@ -20,13 +20,11 @@ public class ZooMain {
         Store store = new Store();
         RandomEvents randomEvents = new RandomEvents();
 
-        player.shopFoodOrWater(scan, store);
-        System.out.println();
-        player.feedTheAnimals(scan);
-        player.waterTheAnimals(scan);
-        player.waterTheAnimals(scan);
 
+        int a = 95;
+        double b = (double) a / 100;
 
+        System.out.println(b);
 
 //        while(dayCounter < 8){
 //
@@ -84,6 +82,10 @@ public class ZooMain {
 
     }
 
+    public static void addingSicknessPoints(){
+
+    }
+
     // int the end of the day gives out as many points as many alive animals are there in the zoo
     public static int givingDayPoints(ArrayList<Animal> animalList){
 
@@ -120,6 +122,36 @@ public class ZooMain {
 
             for(Animal a : passedAnimalList){
                 animalList.remove(a);
+            }
+
+        }
+
+    }
+
+    // checks if any of the animals got sick or are still sick
+    public static ArrayList<Animal> whoIsSick(Player player){
+
+        ArrayList<Animal> sickList = new ArrayList<>();
+
+        for(Animal a : player.getAnimalList()){
+
+            if(a.getSicknessPoints() > 0){
+                sickList.add(a);
+            }
+
+        }
+
+        return sickList;
+    }
+
+    public static void printSickAnimalList(ArrayList<Animal> sickList){
+
+        if(sickList.isEmpty()){
+            System.out.println("Noone is sick.");
+        } else {
+
+            for(Animal a : sickList){
+                a.printIfSick();
             }
 
         }
@@ -179,12 +211,6 @@ public class ZooMain {
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getFoodOutOfStockProbability())){
             randomEvent.foodOutOfStock(store);
-        }
-
-        sumOfPrevious += randomEvent.getFoodOutOfStockProbability();
-
-        if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getSomeoneGetsStuckProbability())){
-            randomEvent.someoneGetsStuck(player.getAnimalList());
         }
 
     }
