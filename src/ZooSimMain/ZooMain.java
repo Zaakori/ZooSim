@@ -8,23 +8,54 @@ import java.util.Scanner;
 public class ZooMain {
 
 
-
-
     public static void main(String[] args) {
 
         int dayCounter = 1;
         int pointCounter = 0;
         Scanner scan = new Scanner(System.in);
-
         Player player = new Player();
         Store store = new Store();
-        RandomEvents randomEvents = new RandomEvents();
+        ArrayList<Animal> deceasedList = new ArrayList<>();
 
 
-        int a = 95;
-        double b = (double) a / 100;
+        while(!player.getAnimalList().isEmpty()){
 
-        System.out.println(b);
+            System.out.println("//////////////////////////////////////////////////////////////////");
+            System.out.println("It´s day " + dayCounter);
+
+            if(!deceasedList.isEmpty()){
+
+                for(Animal a : deceasedList){
+                    System.out.println(a.getClassAsString() + " passed away.");
+                }
+             deceasedList.clear();
+            }
+            addingSicknessPoints(whoIsSick(player));
+
+
+            randomEvents(player, store);
+            randomEvents(player, store);
+            printSickAnimalList(whoIsSick(player));
+
+            System.out.println("--------------------------------------------------------------------");
+
+            player.whatYouWannaDoToday(scan, store, whoIsSick(player));
+
+
+            pointCounter += givingDayPoints(player.getAnimalList());
+            takeFoodFromAnimals(player.getAnimalList());
+            takeWaterFromAnimals(player.getAnimalList());
+            deceasedList = deletePassedAnimal(player.getAnimalList());
+
+            player.resetEnergy();
+            store.setIsFoodForSale(true);
+            store.setFoodPrice(10);
+            dayCounter++;
+        }
+
+        System.out.println("GAME OVER");
+        System.out.println(pointCounter);
+
 
 //        while(dayCounter < 8){
 //
@@ -82,10 +113,6 @@ public class ZooMain {
 
     }
 
-    public static void addingSicknessPoints(){
-
-    }
-
     // int the end of the day gives out as many points as many alive animals are there in the zoo
     public static int givingDayPoints(ArrayList<Animal> animalList){
 
@@ -104,7 +131,7 @@ public class ZooMain {
 
     // its the last method of the day - checks if animal is alive or passed away (by checking if bodyWaterAmount of bodyFoodAmount is 0 or less)
     // if it passed away then it deletes the animal from Players ArrayList
-    public static void deletePassedAnimal(ArrayList<Animal> animalList){
+    public static ArrayList<Animal> deletePassedAnimal(ArrayList<Animal> animalList){
 
         ArrayList<Animal> passedAnimalList = new ArrayList<>();
 
@@ -114,6 +141,8 @@ public class ZooMain {
                passedAnimalList.add(a);
             } else if(a.getBodyWaterAmount() <= 0){
                passedAnimalList.add(a);
+            } else if(a.getSicknessPoints() >= 2){
+                passedAnimalList.add(a);
             }
 
         }
@@ -126,6 +155,7 @@ public class ZooMain {
 
         }
 
+        return passedAnimalList;
     }
 
     // checks if any of the animals got sick or are still sick
@@ -146,14 +176,24 @@ public class ZooMain {
 
     public static void printSickAnimalList(ArrayList<Animal> sickList){
 
-        if(sickList.isEmpty()){
-            System.out.println("Noone is sick.");
-        } else {
+        if(!sickList.isEmpty()){
 
             for(Animal a : sickList){
                 a.printIfSick();
             }
 
+        }
+
+    }
+
+    public static void addingSicknessPoints(ArrayList<Animal> sickList){
+
+        if(sickList.isEmpty()){
+            return;
+        }
+
+        for(Animal a : sickList){
+            a.setSicknessPoints(a.getSicknessPoints() + 1);
         }
 
     }

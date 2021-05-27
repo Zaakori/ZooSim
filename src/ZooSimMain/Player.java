@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 public class Player {
 
-    private int energy = 2;
+    private int energy;
+    private final int DEFAULT_ENERGY = 2;
     private int gold = 1000;
     private ArrayList<Animal> animalList;
     private double foodStorage;
@@ -34,6 +35,10 @@ public class Player {
 
     public int getEnergy() {
         return energy;
+    }
+
+    public void resetEnergy(){
+        energy = DEFAULT_ENERGY;
     }
 
     public void printEnergyAmount(){
@@ -69,6 +74,54 @@ public class Player {
         }
     }
 
+    public void whatYouWannaDoToday(Scanner scan, Store store, ArrayList<Animal> sickList){
+
+        int playerInput = -1;
+
+
+        System.out.println("What do you want to do today?");
+        System.out.println("(type the corresponding number and press enter)");
+
+        while(playerInput != 0){
+
+            printEnergyAmount();
+
+            System.out.println("0 - do nothing [costs 0 energy points]");
+            System.out.println("1 - go shopping for food and water [costs 1 energy point]");
+            System.out.println("2 - give food to the animals [costs 1 energy point]");
+            System.out.println("3 - give water to animals [costs 1 energy point]");
+
+            if(!sickList.isEmpty()){
+                System.out.println("4 - cure sick animal [costs 2 energy points]");
+            }
+
+            try{
+                playerInput = scan.nextInt();
+            } catch (Exception e){
+                System.out.println("Oh, something went wrong, try again.");
+            }
+
+            if(playerInput == 1){
+                shopFoodOrWater(scan, store);
+            } else if(playerInput == 2){
+                feedTheAnimals(scan);
+            } else if(playerInput == 3){
+                waterTheAnimals(scan);
+            } else if(playerInput == 4){
+
+                if(sickList.isEmpty()){
+                    System.out.println("There is nobody to cure, everyone is okay.");
+                } else{
+                    cureAnimals(scan);
+                }
+            }
+
+            if(energy <= 0){
+                return;
+            }
+        }
+    }
+
     // allows player to buy food and/or water
     public void shopFoodOrWater(Scanner scan, Store store){
 
@@ -80,11 +133,15 @@ public class Player {
             return;
         }
 
-        System.out.println("How many packs of food do you want to buy? Price for a pack today is " + store.getFoodPrice() + " gold. You have " + gold + " gold.");
+        if(store.isFoodForSale()){
+            System.out.println("How many packs of food do you want to buy? Price for a pack today is " + store.getFoodPrice() + " gold. You have " + gold + " gold.");
 
-        playerInput = scan.nextInt();
+            playerInput = scan.nextInt();
 
-        buyFood(playerInput, store);
+            buyFood(playerInput, store);
+        } else {
+            System.out.println("No food today for sale. Maybe tomorrow there´s better luck.");
+        }
 
         System.out.println("How many crates of water do you want to buy? Price for a crate today is " + store.getWaterPrice() + " gold. You have " + gold + " gold.");
 
@@ -93,8 +150,6 @@ public class Player {
         buyWater(playerInput, store);
 
         energy--;
-        printEnergyAmount();
-
     }
 
     // buys food from the store and adds it to players food storage

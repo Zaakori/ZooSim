@@ -92,6 +92,12 @@ public class RandomEvents {
 
         }
 
+        if(random == 0){
+            System.out.println("There is a sale on food! Today a food pack costs 8 gold.");
+        } else if(random == 1){
+            System.out.println("There is a sale on food! Today a food pack costs 6 gold.");
+        }
+
     }
 
     // it´s a hot day, so in the end of the day from each animal is taken not one
@@ -102,20 +108,26 @@ public class RandomEvents {
             a.setBodyWaterAmount(a.getBodyWaterAmount() - (a.getWaterNeed() * 2));
         }
 
+        System.out.println("Today is a hot day! All animals are two times more thirsty than usual.");
     }
 
     // rats invade the food storage, so half of the food is eaten by rats
     public void ratInvasion(Player player){
 
         if(player.getFoodStorage() != 0){
+
+            System.out.println("There was a rat invasion in your food storage! You had " + player.getFoodStorage() +
+                    " packs of food and now you have " + player.getFoodStorage() / 2 + " packs left.");
+
             player.setFoodStorage(player.getFoodStorage() / 2);
+
         }
 
     }
 
     // nothing happens
     public void nothingHappened(){
-
+        System.out.println("Huh, nothing happened.");
     }
 
     // it rains, so the player doesn´t have to give water to them this day
@@ -125,6 +137,7 @@ public class RandomEvents {
             a.setBodyWaterAmount(a.getBodyWaterAmount() + a.getWaterNeed());
         }
 
+        System.out.println("Rain day! Every animal got their day´s share of water.");
     }
 
     // the sickness roams in the zoo, random 60% animals are selected and can get sick, animals that actually got sick are returned in ArrayList
@@ -161,6 +174,7 @@ public class RandomEvents {
 
         }
 
+        System.out.println("Sickness roams in the zoo...");
     }
 
     // a random amount of food is being donated to the zoo
@@ -172,6 +186,9 @@ public class RandomEvents {
 
         player.setFoodStorage(player.getFoodStorage() + random);
 
+        System.out.println("Some nice people donated food to the zoo! They donated " + random +
+                " food packs and now you have " + player.getFoodStorage() + " packs of food in storage.");
+
     }
 
     // there is no food in the store at that day
@@ -179,7 +196,7 @@ public class RandomEvents {
 
         store.setIsFoodForSale(false);
 
+        System.out.println("Sadly the shop doesn´t have any food for sale today. Maybe tomorrow?");
     }
-
 
 }

@@ -29,6 +29,11 @@ public abstract class Animal {
     }
 
     public void setBodyFoodAmount(double bodyFoodAmount) {
+
+        if(bodyFoodAmount < 0){
+            this.bodyFoodAmount = 0;
+        }
+
         this.bodyFoodAmount = bodyFoodAmount;
     }
 
@@ -45,6 +50,11 @@ public abstract class Animal {
     }
 
     public void setBodyWaterAmount(double bodyWaterAmount) {
+
+        if(bodyWaterAmount < 0){
+            this.bodyWaterAmount = 0;
+        }
+
         this.bodyWaterAmount = bodyWaterAmount;
     }
 
