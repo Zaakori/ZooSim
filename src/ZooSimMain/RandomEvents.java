@@ -14,7 +14,6 @@ public class RandomEvents {
     private int sicknessProbability = 10;
     private int peopleFeedProbability = 10;
     private int foodOutOfStockProbability = 10;
-    private int someoneGetsStuckProbability = 10;
 
     public int getSaleOnFoodProbability() {
         return saleOnFoodProbability;
@@ -56,10 +55,6 @@ public class RandomEvents {
         return foodOutOfStockProbability;
     }
 
-    public int getSomeoneGetsStuckProbability() {
-        return someoneGetsStuckProbability;
-    }
-
     // used for getting a random number in a correct range
     public int getRandomNumberInRightRange(){
 
@@ -68,7 +63,7 @@ public class RandomEvents {
 
         int total = saleOnFoodProbability + hotDayProbability + ratInvasionProbability +
                 nothingHappenedProbability + rainProbability + sicknessProbability + peopleFeedProbability +
-                foodOutOfStockProbability + someoneGetsStuckProbability;
+                foodOutOfStockProbability;
 
         random = rand.nextInt(total) + 1;
 
@@ -78,6 +73,11 @@ public class RandomEvents {
 
     // sale on food packs, randomly packs are discounted to 8 or 6 gold
     public void saleOnFood(Store store){
+
+        if(store.isClosed()){
+            System.out.println("Nothing happened, no sale for today.");
+            return;
+        }
 
         Random rand = new Random();
         int random = rand.nextInt(2);
@@ -121,12 +121,15 @@ public class RandomEvents {
 
             player.setFoodStorage(player.getFoodStorage() / 2);
 
+        } else {
+            System.out.println("Rats came looking for food but found nothing. So nothing happened.");
         }
 
     }
 
     // nothing happens
     public void nothingHappened(){
+
         System.out.println("Huh, nothing happened.");
     }
 
@@ -194,7 +197,12 @@ public class RandomEvents {
     // there is no food in the store at that day
     public void foodOutOfStock(Store store){
 
-        store.setIsFoodForSale(false);
+        if(store.isSale()){
+            System.out.println("Nothing happened, shop is still open.");
+            return;
+        }
+
+        store.setIsClosed(true);
 
         System.out.println("Sadly the shop doesn´t have any food for sale today. Maybe tomorrow?");
     }

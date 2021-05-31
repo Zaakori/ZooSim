@@ -11,12 +11,13 @@ public class Player {
     private final int DEFAULT_ENERGY = 2;
     private int gold = 1000;
     private ArrayList<Animal> animalList;
-    private double foodStorage;
-    private double waterStorage;
+    private double foodStorage = 10;
+    private double waterStorage = 4;
     private final String notEnoughEnergy = "Sorry, you don´t have enough energy to do that.";
 
 
     public Player() {
+        energy = DEFAULT_ENERGY;
         animalList = new ArrayList<>();
 
         Elephant elephant = new Elephant();
@@ -74,6 +75,38 @@ public class Player {
         }
     }
 
+    // if lion dies, every alive animals sickness resistance goes down by 20%
+    public void moraleDropLION(){
+
+        for(Animal a : animalList){
+            a.setSicknessResistance(a.getSicknessResistance() - 0.2);
+        }
+
+    }
+
+    // every day when sloth is alive, the probability of ´rat invasion´ goes up by 2 points, up to 25 points
+    public void ratInvasionUpSLOTH(RandomEvents randomEvents){
+
+        if(randomEvents.getRatInvasionProbability() >= 25){
+            return;
+        }
+
+        randomEvents.setRatInvasionProbability(randomEvents.getRatInvasionProbability() + 2);
+
+    }
+
+    // each day on which zebra is alive the probability of ´nothing happened´ goes up by 2 points, up to 30 points
+    public void nothingHappenedUpZEBRA(RandomEvents randomEvents){
+
+        if(randomEvents.getNothingHappenedProbability() >= 30){
+            return;
+        }
+
+        randomEvents.setNothingHappenedProbability(randomEvents.getNothingHappenedProbability() + 2);
+
+    }
+
+
     public void whatYouWannaDoToday(Scanner scan, Store store, ArrayList<Animal> sickList){
 
         int playerInput = -1;
@@ -126,6 +159,8 @@ public class Player {
     public void shopFoodOrWater(Scanner scan, Store store){
 
         int playerInput;
+        boolean foodIsBought = false;
+        boolean waterIsBought = false;
 
 
         if(energy < 1){
@@ -133,21 +168,28 @@ public class Player {
             return;
         }
 
-        if(store.isFoodForSale()){
-            System.out.println("How many packs of food do you want to buy? Price for a pack today is " + store.getFoodPrice() + " gold. You have " + gold + " gold.");
+        if(!store.isClosed()){
 
-            playerInput = scan.nextInt();
+            while(!foodIsBought){
+                System.out.println("How many packs of food do you want to buy? Price for a pack today is " + store.getFoodPrice() + " gold. You have " + gold + " gold.");
 
-            buyFood(playerInput, store);
+                playerInput = scan.nextInt();
+
+                foodIsBought = buyFood(playerInput, store);
+            }
+
         } else {
             System.out.println("No food today for sale. Maybe tomorrow there´s better luck.");
         }
 
-        System.out.println("How many crates of water do you want to buy? Price for a crate today is " + store.getWaterPrice() + " gold. You have " + gold + " gold.");
+        while(!waterIsBought){
+            System.out.println("How many crates of water do you want to buy? Price for a crate today is " + store.getWaterPrice() + " gold. You have " + gold + " gold.");
 
-        playerInput = scan.nextInt();
+            playerInput = scan.nextInt();
 
-        buyWater(playerInput, store);
+           waterIsBought = buyWater(playerInput, store);
+        }
+
 
         energy--;
     }
@@ -158,12 +200,12 @@ public class Player {
         int totalPrice = store.getFoodPrice() * amountOfFood;
 
         if(amountOfFood < 1){
-            System.out.println("Sorry, you can´t buy " + amountOfFood + " pack(s) of food.");
+            System.out.println("Sorry, you can´t buy " + amountOfFood + " pack(s) of food. Try again.");
             return false;
         }
 
         if(totalPrice > gold){
-            System.out.println("Sorry, you don´t have enough gold to buy " + amountOfFood + " pack(s) of food.");
+            System.out.println("Sorry, you don´t have enough gold to buy " + amountOfFood + " pack(s) of food. Try again.");
             return false;
         } else {
             gold -= totalPrice;
@@ -179,12 +221,12 @@ public class Player {
         int totalPrice = store.getWaterPrice() * amountOfWater;
 
         if(amountOfWater < 1){
-            System.out.println("Sorry, you can´t buy " + amountOfWater + " crate(s) of water.");
+            System.out.println("Sorry, you can´t buy " + amountOfWater + " crate(s) of water. Try again.");
             return false;
         }
 
         if(totalPrice > gold){
-            System.out.println("Sorry, you don´t have enough gold to buy " + amountOfWater + " crate(s) of water.");
+            System.out.println("Sorry, you don´t have enough gold to buy " + amountOfWater + " crate(s) of water. Try again.");
             return false;
         } else {
             gold -= totalPrice;
@@ -203,6 +245,11 @@ public class Player {
 
         if(energy < 1){
             System.out.println(notEnoughEnergy);
+            return;
+        }
+
+        if(foodStorage < 0.5){
+            System.out.println("You don´t have enough food packs to feed anyone. You have " + foodStorage + " food packs.");
             return;
         }
 
@@ -229,6 +276,10 @@ public class Player {
                    }
                }
            }
+           if(foodStorage < 0.5){
+               System.out.println("You don´t have any food packs left.");
+               break;
+           }
         }
         energy--;
         printEnergyAmount();
@@ -243,6 +294,11 @@ public class Player {
 
         if(energy < 1){
             System.out.println(notEnoughEnergy);
+            return;
+        }
+
+        if(waterStorage < 1){
+            System.out.println("You don´t have enough water crates. You have " + waterStorage + " water crates.");
             return;
         }
 
@@ -268,6 +324,10 @@ public class Player {
                         break;
                     }
                 }
+            }
+            if(waterStorage < 1){
+                System.out.println("You don´t have any water crates left.");
+                break;
             }
         }
         energy--;

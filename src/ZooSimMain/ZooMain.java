@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 public class ZooMain {
 
+   static boolean lionIsAlive = true;
+   static boolean slothIsAlive = true;
+   static boolean zebraIsAlive = true;
 
     public static void main(String[] args) {
 
@@ -15,7 +18,18 @@ public class ZooMain {
         Scanner scan = new Scanner(System.in);
         Player player = new Player();
         Store store = new Store();
+        RandomEvents randomEventsInstance = new RandomEvents();
         ArrayList<Animal> deceasedList = new ArrayList<>();
+
+
+        for(int i = 0; i < 15; i++){
+
+
+            player.shopFoodOrWater(scan, store);
+
+            System.out.println("*******************************************");
+        }
+
 
 
         while(!player.getAnimalList().isEmpty()){
@@ -33,8 +47,8 @@ public class ZooMain {
             addingSicknessPoints(whoIsSick(player));
 
 
-            randomEvents(player, store);
-            randomEvents(player, store);
+            randomEvents(player, store, randomEventsInstance);
+            randomEvents(player, store, randomEventsInstance);
             printSickAnimalList(whoIsSick(player));
 
             System.out.println("--------------------------------------------------------------------");
@@ -42,43 +56,29 @@ public class ZooMain {
             player.whatYouWannaDoToday(scan, store, whoIsSick(player));
 
 
+              if(slothIsAlive){
+                  player.ratInvasionUpSLOTH(randomEventsInstance);
+              }
+
+              if(zebraIsAlive){
+                  player.nothingHappenedUpZEBRA(randomEventsInstance);
+              }
+
             pointCounter += givingDayPoints(player.getAnimalList());
             takeFoodFromAnimals(player.getAnimalList());
             takeWaterFromAnimals(player.getAnimalList());
             deceasedList = deletePassedAnimal(player.getAnimalList());
+            areLionSlothZebraAlive(player);
 
             player.resetEnergy();
-            store.setIsFoodForSale(true);
+            store.setIsClosed(false);
+            store.setSale(false);
             store.setFoodPrice(10);
             dayCounter++;
         }
 
         System.out.println("GAME OVER");
         System.out.println(pointCounter);
-
-
-//        while(dayCounter < 8){
-//
-//            System.out.println(dayCounter);
-//
-//         takeWaterFromAnimals(player.getAnimalList());
-//
-//            deletePassedAnimal(player.getAnimalList());
-//
-//            pointCounter += givingDayPoints(player.animalList);
-//
-//            dayCounter++;
-//
-//
-//
-//            for(Animal a : player.getAnimalList()){
-//                System.out.println(a);
-//            }
-//            System.out.println("**************");
-//        }
-//
-//        System.out.println("game over");
-//        System.out.println(pointCounter);
 
     }
 
@@ -158,6 +158,34 @@ public class ZooMain {
         return passedAnimalList;
     }
 
+    // turns 'IsAlive' booleans to false if either lion, sloth or zebra die
+    public static void areLionSlothZebraAlive(Player player){
+
+        if(!lionIsAlive && !slothIsAlive && !zebraIsAlive){
+            return;
+        }
+
+        ArrayList<String> aliveList = new ArrayList<>();
+
+        for(Animal a : player.getAnimalList()){
+            aliveList.add(a.getClassAsString());
+        }
+
+        if(!aliveList.contains("Lion")){
+            lionIsAlive = false;
+            player.moraleDropLION();
+        }
+
+        if(!aliveList.contains("Sloth")){
+            slothIsAlive = false;
+        }
+
+        if(!aliveList.contains("Zebra")){
+            zebraIsAlive = false;
+        }
+
+    }
+
     // checks if any of the animals got sick or are still sick
     public static ArrayList<Animal> whoIsSick(Player player){
 
@@ -174,6 +202,7 @@ public class ZooMain {
         return sickList;
     }
 
+    // actually prints out the list of sick animals
     public static void printSickAnimalList(ArrayList<Animal> sickList){
 
         if(!sickList.isEmpty()){
@@ -186,6 +215,7 @@ public class ZooMain {
 
     }
 
+    // adds sickness points every day to an animal that is sick and hasn´t been cured yet
     public static void addingSicknessPoints(ArrayList<Animal> sickList){
 
         if(sickList.isEmpty()){
@@ -200,57 +230,64 @@ public class ZooMain {
 
 
     // actually generates a random event
-    public static void randomEvents(Player player, Store store){
+    public static void randomEvents(Player player, Store store, RandomEvents randomEvent){
 
-        RandomEvents randomEvent = new RandomEvents();
         int randomNumber = randomEvent.getRandomNumberInRightRange();
         int sumOfPrevious = 0;
 
 
         if(randomNumber <= sumOfPrevious + randomEvent.getSaleOnFoodProbability()){
             randomEvent.saleOnFood(store);
+            return;
         }
 
         sumOfPrevious += randomEvent.getSaleOnFoodProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getHotDayProbability())){
             randomEvent.hotDay(player.getAnimalList());
+            return;
         }
 
         sumOfPrevious += randomEvent.getHotDayProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getRatInvasionProbability())){
             randomEvent.ratInvasion(player);
+            return;
         }
 
         sumOfPrevious += randomEvent.getRatInvasionProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getNothingHappenedProbability())){
             randomEvent.nothingHappened();
+            return;
         }
 
         sumOfPrevious += randomEvent.getNothingHappenedProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getRainProbability())){
             randomEvent.rain(player.getAnimalList());
+            return;
         }
 
         sumOfPrevious += randomEvent.getRainProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getSicknessProbability())){
             randomEvent.sickness(player.getAnimalList());
+            return;
         }
 
         sumOfPrevious += randomEvent.getSicknessProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getPeopleFeedProbability())){
             randomEvent.peopleFeed(player);
+            return;
         }
 
         sumOfPrevious += randomEvent.getPeopleFeedProbability();
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getFoodOutOfStockProbability())){
             randomEvent.foodOutOfStock(store);
+            return;
         }
 
     }

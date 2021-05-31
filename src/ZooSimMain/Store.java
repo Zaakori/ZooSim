@@ -4,7 +4,8 @@ public class Store {
 
     private int foodPrice = 10;
     private int waterPrice = 5;
-    private boolean isFoodForSale = true;
+    private boolean isClosed = false;
+    private boolean isSale = false;
 
     public int getFoodPrice() {
         return foodPrice;
@@ -18,11 +19,19 @@ public class Store {
         return waterPrice;
     }
 
-    public boolean isFoodForSale() {
-        return isFoodForSale;
+    public boolean isClosed() {
+        return isClosed;
     }
 
-    public void setIsFoodForSale(boolean foodForSale) {
-        isFoodForSale = foodForSale;
+    public void setIsClosed(boolean foodForSale) {
+        isClosed = foodForSale;
+    }
+
+    public boolean isSale() {
+        return isSale;
+    }
+
+    public void setSale(boolean sale) {
+        isSale = sale;
     }
 }
