@@ -32,13 +32,16 @@ public abstract class Animal {
 
         if(bodyFoodAmount < 0){
             this.bodyFoodAmount = 0;
+            return;
         }
 
         this.bodyFoodAmount = bodyFoodAmount;
     }
 
-    public void printFoodAmountInDays(){
-        System.out.println(getClassAsString() + " can survive " + (getBodyFoodAmount() / foodNeed) + " day(s) without food.");
+    public void printFoodAndWaterAmountInDays(){
+        System.out.println(getClassAsString() + " can survive " + (getBodyFoodAmount() / foodNeed) + " day(s) without food" +
+                " and " + (getBodyWaterAmount() / waterNeed) + " day(s) without water.");
+
     }
 
     public double getWaterNeed() {
@@ -53,15 +56,11 @@ public abstract class Animal {
 
         if(bodyWaterAmount < 0){
             this.bodyWaterAmount = 0;
+            return;
         }
 
         this.bodyWaterAmount = bodyWaterAmount;
     }
-
-    public void printWaterAmountInDays(){
-        System.out.println(getClassAsString() + " can survive " + (getBodyWaterAmount() / waterNeed) + " day(s) without water.");
-    }
-
 
     public double getSicknessResistance() {
         return sicknessResistance;

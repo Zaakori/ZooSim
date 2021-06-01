@@ -105,7 +105,13 @@ public class RandomEvents {
     public void hotDay(List<Animal> animalList){
 
         for(Animal a : animalList){
-            a.setBodyWaterAmount(a.getBodyWaterAmount() - (a.getWaterNeed() * 2));
+
+            if(a.getBodyWaterAmount() <= 1){
+                a.setBodyWaterAmount(1);
+            } else {
+                a.setBodyWaterAmount(a.getBodyWaterAmount() - (a.getWaterNeed() * 2));
+            }
+
         }
 
         System.out.println("Today is a hot day! All animals are two times more thirsty than usual.");
@@ -114,15 +120,18 @@ public class RandomEvents {
     // rats invade the food storage, so half of the food is eaten by rats
     public void ratInvasion(Player player){
 
-        if(player.getFoodStorage() != 0){
+        if(player.getFoodStorage() > 1){
+
+            double ratInvasionRaw = player.getFoodStorage() / 2;
+            double ratInvasionResult = Math.round(ratInvasionRaw);
 
             System.out.println("There was a rat invasion in your food storage! You had " + player.getFoodStorage() +
-                    " packs of food and now you have " + player.getFoodStorage() / 2 + " packs left.");
+                    " packs of food and now you have " + ratInvasionResult + " packs left.");
 
-            player.setFoodStorage(player.getFoodStorage() / 2);
+            player.setFoodStorage(ratInvasionResult);
 
         } else {
-            System.out.println("Rats came looking for food but found nothing. So nothing happened.");
+            System.out.println("Rats came looking for food but didn´t find much. So nothing happened.");
         }
 
     }

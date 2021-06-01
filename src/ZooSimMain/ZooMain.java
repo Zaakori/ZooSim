@@ -22,20 +22,12 @@ public class ZooMain {
         ArrayList<Animal> deceasedList = new ArrayList<>();
 
 
-        for(int i = 0; i < 15; i++){
-
-
-            player.shopFoodOrWater(scan, store);
-
-            System.out.println("*******************************************");
-        }
-
-
-
         while(!player.getAnimalList().isEmpty()){
 
             System.out.println("//////////////////////////////////////////////////////////////////");
             System.out.println("It´s day " + dayCounter);
+
+            System.out.println();
 
             if(!deceasedList.isEmpty()){
 
@@ -78,7 +70,7 @@ public class ZooMain {
         }
 
         System.out.println("GAME OVER");
-        System.out.println(pointCounter);
+        System.out.println("Your score is: " + pointCounter);
 
     }
 
@@ -171,7 +163,7 @@ public class ZooMain {
             aliveList.add(a.getClassAsString());
         }
 
-        if(!aliveList.contains("Lion")){
+        if(!aliveList.contains("Lion") && lionIsAlive){
             lionIsAlive = false;
             player.moraleDropLION();
         }

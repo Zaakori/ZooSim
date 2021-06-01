@@ -7,7 +7,7 @@ public class Sloth extends Animal {
         foodNeed = 0.5;
         waterNeed = 1;
         bodyFoodAmount = 2.5;
-        bodyWaterAmount = 4.5;
+        bodyWaterAmount = 3;
         sicknessResistance = 0.4;
     }
 }

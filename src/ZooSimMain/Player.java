@@ -8,11 +8,11 @@ import java.util.Scanner;
 public class Player {
 
     private int energy;
-    private final int DEFAULT_ENERGY = 2;
-    private int gold = 1000;
+    private final int DEFAULT_ENERGY = 3;
+    private int gold = 250;
     private ArrayList<Animal> animalList;
-    private double foodStorage = 10;
-    private double waterStorage = 4;
+    private double foodStorage;
+    private double waterStorage;
     private final String notEnoughEnergy = "Sorry, you don´t have enough energy to do that.";
 
 
@@ -75,6 +75,14 @@ public class Player {
         }
     }
 
+    public void printAnimalWaterAndFoodState(){
+
+        for(Animal a : animalList){
+            a.printFoodAndWaterAmountInDays();
+        }
+
+    }
+
     // if lion dies, every alive animals sickness resistance goes down by 20%
     public void moraleDropLION(){
 
@@ -84,21 +92,21 @@ public class Player {
 
     }
 
-    // every day when sloth is alive, the probability of ´rat invasion´ goes up by 2 points, up to 25 points
+    // every day when sloth is alive, the probability of ´rat invasion´ goes up by 1 point, up to 25 points
     public void ratInvasionUpSLOTH(RandomEvents randomEvents){
 
         if(randomEvents.getRatInvasionProbability() >= 25){
             return;
         }
 
-        randomEvents.setRatInvasionProbability(randomEvents.getRatInvasionProbability() + 2);
+        randomEvents.setRatInvasionProbability(randomEvents.getRatInvasionProbability() + 1);
 
     }
 
-    // each day on which zebra is alive the probability of ´nothing happened´ goes up by 2 points, up to 30 points
+    // each day on which zebra is alive the probability of ´nothing happened´ goes up by 2 points, up to 25 points
     public void nothingHappenedUpZEBRA(RandomEvents randomEvents){
 
-        if(randomEvents.getNothingHappenedProbability() >= 30){
+        if(randomEvents.getNothingHappenedProbability() >= 25){
             return;
         }
 
@@ -117,30 +125,32 @@ public class Player {
 
         while(playerInput != 0){
 
+            System.out.println();
             printEnergyAmount();
+            System.out.println();
 
-            System.out.println("0 - do nothing [costs 0 energy points]");
-            System.out.println("1 - go shopping for food and water [costs 1 energy point]");
-            System.out.println("2 - give food to the animals [costs 1 energy point]");
-            System.out.println("3 - give water to animals [costs 1 energy point]");
+            System.out.println("0 - do nothing and wait for the next day [costs 0 energy points]");
+            System.out.println("1 - check how thirsty and hydrated the animals are [costs 0 energy points] \n");
+            System.out.println("2 - go shopping for food and water [costs 1 energy point]");
+            System.out.println("3 - give food to the animals [costs 1 energy point]");
+            System.out.println("4 - give water to animals [costs 1 energy point] \n");
 
             if(!sickList.isEmpty()){
-                System.out.println("4 - cure sick animal [costs 2 energy points]");
+                System.out.println("5 - cure sick animal [costs 2 energy points]");
             }
 
-            try{
                 playerInput = scan.nextInt();
-            } catch (Exception e){
-                System.out.println("Oh, something went wrong, try again.");
-            }
+
 
             if(playerInput == 1){
-                shopFoodOrWater(scan, store);
+                printAnimalWaterAndFoodState();
             } else if(playerInput == 2){
-                feedTheAnimals(scan);
+                shopFoodOrWater(scan, store);
             } else if(playerInput == 3){
-                waterTheAnimals(scan);
+                feedTheAnimals(scan);
             } else if(playerInput == 4){
+                waterTheAnimals(scan);
+            } else if(playerInput == 5){
 
                 if(sickList.isEmpty()){
                     System.out.println("There is nobody to cure, everyone is okay.");
