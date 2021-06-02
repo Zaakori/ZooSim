@@ -11,9 +11,10 @@ public class RandomEvents {
     private int ratInvasionProbability = 10;
     private int nothingHappenedProbability = 20;
     private int rainProbability = 10;
-    private int sicknessProbability = 10;
+    private int sicknessProbability = 100;
     private int peopleFeedProbability = 10;
     private int foodOutOfStockProbability = 10;
+    private int illegalAnimalSellerProbability = 10;
 
     public int getSaleOnFoodProbability() {
         return saleOnFoodProbability;
@@ -55,6 +56,10 @@ public class RandomEvents {
         return foodOutOfStockProbability;
     }
 
+    public int getIllegalAnimalSellerProbability() {
+        return illegalAnimalSellerProbability;
+    }
+
     // used for getting a random number in a correct range
     public int getRandomNumberInRightRange(){
 
@@ -63,7 +68,7 @@ public class RandomEvents {
 
         int total = saleOnFoodProbability + hotDayProbability + ratInvasionProbability +
                 nothingHappenedProbability + rainProbability + sicknessProbability + peopleFeedProbability +
-                foodOutOfStockProbability;
+                foodOutOfStockProbability + illegalAnimalSellerProbability;
 
         random = rand.nextInt(total) + 1;
 
@@ -214,6 +219,12 @@ public class RandomEvents {
         store.setIsClosed(true);
 
         System.out.println("Sadly the shop doesn´t have any food for sale today. Maybe tomorrow?");
+    }
+
+    public void illegalAnimalSeller(){
+
+        System.out.println("An Illegal Animal Seller threatens to steal one of your animals, pay him 30 gold immediately or " +
+                "use your muscles to show him who is the boss.");
     }
 
 }

@@ -13,6 +13,7 @@ public class Player {
     private ArrayList<Animal> animalList;
     private double foodStorage;
     private double waterStorage;
+    private boolean animalHasBeenStolen = true;
     private final String notEnoughEnergy = "Sorry, you don´t have enough energy to do that.";
 
 
@@ -66,6 +67,14 @@ public class Player {
         return waterStorage;
     }
 
+    public boolean isAnimalHasBeenStolen() {
+        return animalHasBeenStolen;
+    }
+
+    public void setAnimalHasBeenStolen(boolean animalHasBeenStolen) {
+        this.animalHasBeenStolen = animalHasBeenStolen;
+    }
+
     // prints out what animals are currently in the zoo
     public void printAnimalsInTheZoo(){
         System.out.println("Animals in the zoo: ");
@@ -75,6 +84,7 @@ public class Player {
         }
     }
 
+    // prints out a kind of table that shows how many days (from this point in time) can animals live without food and water
     public void printAnimalWaterAndFoodState(){
 
         for(Animal a : animalList){
@@ -114,10 +124,12 @@ public class Player {
 
     }
 
-
-    public void whatYouWannaDoToday(Scanner scan, Store store, ArrayList<Animal> sickList){
+    // main method that controls what can a player do in a day, kind of a control panel for all player activities
+    public void whatYouWannaDoToday(Scanner scan, Store store, ArrayList<Animal> sickList, boolean animalIsStolen){
 
         int playerInput = -1;
+        boolean alreadySolvedSick = false;
+        boolean alreadySolvedIllegalSeller = false;
 
 
         System.out.println("What do you want to do today?");
@@ -135,8 +147,12 @@ public class Player {
             System.out.println("3 - give food to the animals [costs 1 energy point]");
             System.out.println("4 - give water to animals [costs 1 energy point] \n");
 
-            if(!sickList.isEmpty()){
+            if(!sickList.isEmpty() && !alreadySolvedSick){
                 System.out.println("5 - cure sick animal [costs 2 energy points]");
+            }
+
+            if(animalIsStolen && !alreadySolvedIllegalSeller){
+                System.out.println("6 - solve the Illegal Animal Seller problem [30 gold / 2 energy points]");
             }
 
                 playerInput = scan.nextInt();
@@ -154,8 +170,15 @@ public class Player {
 
                 if(sickList.isEmpty()){
                     System.out.println("There is nobody to cure, everyone is okay.");
-                } else{
-                    cureAnimals(scan);
+                } else if (!sickList.isEmpty() && !alreadySolvedSick){
+                   alreadySolvedSick = cureAnimals(scan);
+                }
+            } else if(playerInput == 6){
+
+                if(!animalIsStolen){
+                    System.out.println("Nobody is stolen, chill.");
+                } else if(animalIsStolen && !alreadySolvedIllegalSeller) {
+                   alreadySolvedIllegalSeller = solveIllegalAnimalSeller(scan);
                 }
             }
 
@@ -345,7 +368,7 @@ public class Player {
     }
 
     // allows the player to cure the sick animal for 2 energy points
-    public void cureAnimals(Scanner scan){
+    public boolean cureAnimals(Scanner scan){
 
         String playerInput = "";
 
@@ -368,13 +391,55 @@ public class Player {
                         energy -= 2;
                         printEnergyAmount();
 
-                        return;
+                        return true;
                     } else {
                         System.out.println("This animal isn´t sick... Do you still want to cure someone or you´re done?");
                     }
                 }
             }
         }
+        return false;
+    }
+
+    // gives opportunity to solve Illegal Animal Seller problem if that problem arises in main game
+    public boolean solveIllegalAnimalSeller(Scanner scan){
+
+        int playerInput = 3;
+
+        while(playerInput > 2){
+
+            System.out.println("If you want to pay the Illegal Seller off, TYPE 1 [pay 30 gold].");
+            System.out.println("If you want to use force TYPE 2 [use 2 energy points].");
+            System.out.println("(if you don´t want/ can´t solve the problem, TYPE 3)");
+
+            playerInput = scan.nextInt();
+
+            if(playerInput == 1){
+
+                if(gold < 30){
+                    System.out.println("Oh, you don´t have enough money, you have only " + gold + " gold.");
+                } else {
+                    gold -= 30;
+                    System.out.println("You paid that criminal off... let´s hope he doesn´t come again. You have " + gold + " gold left.");
+                    animalHasBeenStolen = false;
+                    return true;
+                }
+            } else if(playerInput == 2){
+
+                if(energy < 2){
+                    System.out.println(notEnoughEnergy);
+                } else {
+                    energy -= 2;
+                    System.out.println("You firmly showed this criminal scum the way out... let´s hope he doesn´t come again.");
+                    animalHasBeenStolen = false;
+                    return true;
+                }
+
+            } else if(playerInput == 3){
+                return false;
+            }
+        }
+        return false;
     }
 
 

@@ -2,6 +2,7 @@ package ZooSimMain;
 
 import ZooSimMain.ZooAnimals.Animal;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -10,6 +11,7 @@ public class ZooMain {
    static boolean lionIsAlive = true;
    static boolean slothIsAlive = true;
    static boolean zebraIsAlive = true;
+   static boolean animalIsStolen = false;
 
     public static void main(String[] args) {
 
@@ -20,6 +22,7 @@ public class ZooMain {
         Store store = new Store();
         RandomEvents randomEventsInstance = new RandomEvents();
         ArrayList<Animal> deceasedList = new ArrayList<>();
+        ArrayList<Animal> stolenAnimalsList = new ArrayList<>();
 
 
         while(!player.getAnimalList().isEmpty()){
@@ -36,6 +39,15 @@ public class ZooMain {
                 }
              deceasedList.clear();
             }
+            if(!stolenAnimalsList.isEmpty()){
+
+                for(Animal a : stolenAnimalsList){
+                    System.out.println(a.getClassAsString() + " was stolen.");
+                }
+                stolenAnimalsList.clear();
+            }
+
+
             addingSicknessPoints(whoIsSick(player));
 
 
@@ -45,7 +57,7 @@ public class ZooMain {
 
             System.out.println("--------------------------------------------------------------------");
 
-            player.whatYouWannaDoToday(scan, store, whoIsSick(player));
+          player.whatYouWannaDoToday(scan, store, whoIsSick(player), animalIsStolen);
 
 
               if(slothIsAlive){
@@ -61,11 +73,19 @@ public class ZooMain {
             takeWaterFromAnimals(player.getAnimalList());
             deceasedList = deletePassedAnimal(player.getAnimalList());
             areLionSlothZebraAlive(player);
+            if(animalIsStolen){
+                animalIsStolen = player.isAnimalHasBeenStolen();
+            }
+            if(animalIsStolen){
+               stolenAnimalsList.add(stealAnimal(player.getAnimalList()));
+            }
 
             player.resetEnergy();
             store.setIsClosed(false);
             store.setSale(false);
             store.setFoodPrice(10);
+            animalIsStolen = false;
+            player.setAnimalHasBeenStolen(true);
             dayCounter++;
         }
 
@@ -220,6 +240,18 @@ public class ZooMain {
 
     }
 
+    // actually steals (removes from players animal list) an animal if player hasn´t solved this problem beforehand
+    public static Animal stealAnimal(ArrayList<Animal> animalList){
+
+        Random rand = new Random();
+        int random = rand.nextInt(animalList.size());
+        Animal stolenAnimal = animalList.get(random);
+
+        animalList.remove(random);
+
+        return stolenAnimal;
+    }
+
 
     // actually generates a random event
     public static void randomEvents(Player player, Store store, RandomEvents randomEvent){
@@ -279,6 +311,14 @@ public class ZooMain {
 
         if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getFoodOutOfStockProbability())){
             randomEvent.foodOutOfStock(store);
+            return;
+        }
+
+        sumOfPrevious += randomEvent.getFoodOutOfStockProbability();
+
+        if((randomNumber > sumOfPrevious) && (randomNumber <= sumOfPrevious + randomEvent.getIllegalAnimalSellerProbability())){
+            randomEvent.illegalAnimalSeller();
+            animalIsStolen = true;
             return;
         }
 
