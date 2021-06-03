@@ -6,12 +6,13 @@ import java.util.*;
 
 public class RandomEvents {
 
+    // probabilities of different events randomly happening, probability points are used NOT percentages (so the sum is not 100)
     private int saleOnFoodProbability = 10;
     private int hotDayProbability = 10;
     private int ratInvasionProbability = 10;
     private int nothingHappenedProbability = 20;
     private int rainProbability = 10;
-    private int sicknessProbability = 100;
+    private int sicknessProbability = 10;
     private int peopleFeedProbability = 10;
     private int foodOutOfStockProbability = 10;
     private int illegalAnimalSellerProbability = 10;
@@ -221,6 +222,7 @@ public class RandomEvents {
         System.out.println("Sadly the shop doesn´t have any food for sale today. Maybe tomorrow?");
     }
 
+    // Illegal Animal Seller threatens to steal an animal, actual functionality is in ZooMain in randomEvents method where boolean is switched to true
     public void illegalAnimalSeller(){
 
         System.out.println("An Illegal Animal Seller threatens to steal one of your animals, pay him 30 gold immediately or " +

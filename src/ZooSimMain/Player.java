@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 public class Player {
 
-    private int energy;
-    private final int DEFAULT_ENERGY = 3;
-    private int gold = 250;
-    private ArrayList<Animal> animalList;
-    private double foodStorage;
-    private double waterStorage;
-    private boolean animalHasBeenStolen = true;
+    private int energy;                             // stores how many energy points does the player have, in exchange for energy player can do stuff
+    private final int DEFAULT_ENERGY = 3;           // determines how many energy points are default, so how many are restored each day
+    private int gold = 250;                         // how much gold player has
+    private ArrayList<Animal> animalList;           // list of animals that live in players Zoo
+    private double foodStorage;                     // amount of food that is stored, is used to feed animals
+    private double waterStorage;                    // amount of stored water, is used to give animals water
+    private boolean animalHasBeenStolen = true;     // is used to determine whether player has solved StolenAnimal problem or not (if it arises)
     private final String notEnoughEnergy = "Sorry, you don´t have enough energy to do that.";
 
 
@@ -137,6 +137,7 @@ public class Player {
 
         while(playerInput != 0){
 
+            // part that displays the options to the player
             System.out.println();
             printEnergyAmount();
             System.out.println();
@@ -155,6 +156,7 @@ public class Player {
                 System.out.println("6 - solve the Illegal Animal Seller problem [30 gold / 2 energy points]");
             }
 
+            // part that analyzes and reacts to players input
                 playerInput = scan.nextInt();
 
 

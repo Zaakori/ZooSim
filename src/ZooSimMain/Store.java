@@ -2,10 +2,10 @@ package ZooSimMain;
 
 public class Store {
 
-    private int foodPrice = 10;
-    private int waterPrice = 5;
-    private boolean isClosed = false;
-    private boolean isSale = false;
+    private int foodPrice = 10;                           // price of the food, does sometimes change because of RanomEvents class
+    private int waterPrice = 5;                           // price of water, never changes
+    private boolean isClosed = false;                     // shows if store is closed or not
+    private boolean isSale = false;                       // shows is there a sale on food or not
 
     public int getFoodPrice() {
         return foodPrice;

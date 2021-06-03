@@ -8,25 +8,27 @@ import java.util.Scanner;
 
 public class ZooMain {
 
-   static boolean lionIsAlive = true;
-   static boolean slothIsAlive = true;
-   static boolean zebraIsAlive = true;
-   static boolean animalIsStolen = false;
+   static boolean lionIsAlive = true;                                   // checks if lion is still alive
+   static boolean slothIsAlive = true;                                  // checks if sloth is still alive
+   static boolean zebraIsAlive = true;                                  // checks if zebra is still alive
+   static boolean animalIsStolen = false;                               // checks if Illegal Animal Seller has come to steal an animal
 
     public static void main(String[] args) {
 
-        int dayCounter = 1;
-        int pointCounter = 0;
+        int dayCounter = 1;                                             // counts the days
+        int pointCounter = 0;                                           // counts the points, each day the player gets as many points as many animals are still alive
         Scanner scan = new Scanner(System.in);
         Player player = new Player();
         Store store = new Store();
         RandomEvents randomEventsInstance = new RandomEvents();
-        ArrayList<Animal> deceasedList = new ArrayList<>();
-        ArrayList<Animal> stolenAnimalsList = new ArrayList<>();
+        ArrayList<Animal> deceasedList = new ArrayList<>();             // list that contains deceased animals of the day, only for displaying purposes
+        ArrayList<Animal> stolenAnimalsList = new ArrayList<>();        // list that contains stolen animals, only for displaying purposes
 
 
         while(!player.getAnimalList().isEmpty()){
 
+            // part where player gets to know if something has happened the previous night and
+            // also more sickness points are added if an animal was sick day before
             System.out.println("//////////////////////////////////////////////////////////////////");
             System.out.println("It´s day " + dayCounter);
 
@@ -51,15 +53,19 @@ public class ZooMain {
             addingSicknessPoints(whoIsSick(player));
 
 
+            // part where this days´ random events happen and if during one of these events
+            // an animal gets sick it is printed out who got sick
             randomEvents(player, store, randomEventsInstance);
             randomEvents(player, store, randomEventsInstance);
             printSickAnimalList(whoIsSick(player));
 
             System.out.println("--------------------------------------------------------------------");
 
+            // part where finally player can decide what to do today, here we get the input
           player.whatYouWannaDoToday(scan, store, whoIsSick(player), animalIsStolen);
 
-
+            // part where all kind of every day usual events or consequences happen (like: day points are added,
+            // passed animals are deleted from players animal list etc.)
               if(slothIsAlive){
                   player.ratInvasionUpSLOTH(randomEventsInstance);
               }
@@ -71,6 +77,7 @@ public class ZooMain {
             pointCounter += givingDayPoints(player.getAnimalList());
             takeFoodFromAnimals(player.getAnimalList());
             takeWaterFromAnimals(player.getAnimalList());
+            dayCounter++;
             deceasedList = deletePassedAnimal(player.getAnimalList());
             areLionSlothZebraAlive(player);
             if(animalIsStolen){
@@ -80,13 +87,13 @@ public class ZooMain {
                stolenAnimalsList.add(stealAnimal(player.getAnimalList()));
             }
 
+            // all things that need to be reset every day are being reset
             player.resetEnergy();
             store.setIsClosed(false);
             store.setSale(false);
             store.setFoodPrice(10);
             animalIsStolen = false;
             player.setAnimalHasBeenStolen(true);
-            dayCounter++;
         }
 
         System.out.println("GAME OVER");

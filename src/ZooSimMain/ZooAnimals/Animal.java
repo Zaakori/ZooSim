@@ -2,12 +2,12 @@ package ZooSimMain.ZooAnimals;
 
 public abstract class Animal {
 
-    protected double foodNeed;
-    protected double bodyFoodAmount;
-    protected double waterNeed;
-    protected double bodyWaterAmount;
-    protected int sicknessPoints = 0;
-    protected double sicknessResistance;
+    protected double foodNeed;                 // shows how much food does the animal need/consumes every day
+    protected double bodyFoodAmount;           // shows how much food is currently stored in the animals body a.k.a. how hungry it is
+    protected double waterNeed;                // shows how much water does the animal need/consumes every day
+    protected double bodyWaterAmount;          // shows how much water is currently stored in the animals body a.k.a. how thirsty it is
+    protected int sicknessPoints = 0;          // if 0 points, then animal is healthy. amount of points shows how many days the animal has been sick
+    protected double sicknessResistance;       // how resistant the animal is to sickness, in percentages
 
     protected String sickAnimal = " looks ill";
     protected String curedAnimal = " is cured";
@@ -38,6 +38,7 @@ public abstract class Animal {
         this.bodyFoodAmount = bodyFoodAmount;
     }
 
+    // prints out how many days can the animal survive without food and water (separately)
     public void printFoodAndWaterAmountInDays(){
         System.out.println(getClassAsString() + " can survive " + (getBodyFoodAmount() / foodNeed) + " day(s) without food" +
                 " and " + (getBodyWaterAmount() / waterNeed) + " day(s) without water.");
